@@ -19,7 +19,13 @@ db.products.updateOne({_id:ObjectId('65b1e3ea46044a9ddd9d114b')},{$set:{mainCate
 
 // to increment or decrement 
 
-db.collectionName.updateOne({},{$set:{prop:{$inc:val}}})
+db.collectionName.updateOne({},{$inc:{prop:val}})
+
+// to add a new element in a array inside the document 
+
+db.collectionName.updateOne({},{$push:{arrname:newEle}})
+
+db.candidates.updateOne({name:"Akash"},{$push:{scores:89}})
 
 // Query opeartors 
 
@@ -255,58 +261,50 @@ db.employees.aggregate([
 ])
 
 
-
-// Agregation 
-
-// $match 
-// $group  [$max,$min,$sum,$avg,$push]
-// $limit 
-// $sort 
-// $project
-// $filter 
-// $unwind
-// $lookup 
-// $out 
+// filter agg 
 
 
-///
 
-db.users.find({gender:"Male"})
+
+
+
 
 db.users.aggregate([
+
     {
-        $match:{gender:"Male",city:"San Francisco"}
+        $project:{
+            hobbies:{
+                $filter:{
+                    input:"$hobbies",
+                    as:"hobby",
+                    cond:{$eq:["$$hobby","Singing"]}
+                    
+                }
+            }
+        }
     }
-   
+
 ])
 
 
-db.users.aggregate([
-   
+db.candidates.aggregate([
     {
-        $group:{_id:null,"count":{$avg:'$age'}}
+        $project:{
+            address:{
+                $filter:{
+                    input:"$address",
+                    as:"addr",
+                    cond:{$eq:["$$addr.city","Mumbai"]}
+                }
+            }
+        }
+    },
+    {
+        $unwind:"$address"
     }
-   
+
 ])
 
-
-db.users.aggregate([
-   
-    {
-        $group:{_id:'$city',"count":{$sum:1},"people":{$push:"$name"}}
-    },
-    {
-        $project:{count:0}
-    },
-    {
-        $sort:{count:1}
-    },
-   
-    
-
-
-   
-])
 
 
 
@@ -355,3 +353,17 @@ db.users.updateOne({name:"Saurabh"},{$set:{age:28,city:"Mumbai",gender:"Male",em
 
 
 
+
+
+db.courses.aggregate([
+    {
+        $lookup:{
+
+        }
+    },
+    {
+        $project:{
+            "studentCount":{$size:"$arrayname"}
+        }
+    }
+])
