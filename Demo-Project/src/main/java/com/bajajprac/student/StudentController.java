@@ -1,22 +1,25 @@
 package com.bajajprac.student;
 
 
+import com.bajajprac.DBConnection;
 import com.bajajprac.validators.TextValidator;
 import org.w3c.dom.Text;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StudentController implements Controller {
 
     Scanner scanner = new Scanner(System.in);
-    TextValidator nameValidator;
-    Student student;
 
+    StudentGateway studentGateway;
 
-    public StudentController(TextValidator nameValidator)
+    public StudentController(StudentGateway studentGateway)
     {
-        this.nameValidator = nameValidator;
+
+        this.studentGateway = studentGateway;
+
     }
 
     @Override
@@ -29,10 +32,19 @@ public class StudentController implements Controller {
         int rollno = scanner.nextInt();
         String subject = scanner.next();
 
-        if(nameValidator.validate(name)==true)
+        Student student = new Student(name,age,city, rollno,subject);
+
+        if(studentGateway.create(student)==1)
         {
-            student = new Student(name,age,city, rollno,subject);
+            System.out.println("Student Created");
         }
+        else
+        {
+            System.out.println("Some problem");
+        }
+
+
+
 
 
     }
@@ -40,7 +52,9 @@ public class StudentController implements Controller {
     @Override
     public void display() {
 
-        System.out.println(student);
+
+
+
 
     }
 
