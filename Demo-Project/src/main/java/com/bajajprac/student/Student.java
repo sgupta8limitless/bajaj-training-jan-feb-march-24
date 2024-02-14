@@ -4,6 +4,7 @@ import com.bajajprac.User;
 
 public class Student  {
 
+    private int id;
     private String name;
     private int age;
 
@@ -11,6 +12,7 @@ public class Student  {
     private int rollno;
     private String subject;
 
+    public Student() {}
 
     public Student(String name, int age, String city, int rollno, String subject) {
         this.name = name;
@@ -18,6 +20,23 @@ public class Student  {
         this.city = city;
         this.rollno = rollno;
         this.subject = subject;
+    }
+
+    public Student(int id,String name, int age, String city, int rollno, String subject) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.city = city;
+        this.rollno = rollno;
+        this.subject = subject;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -63,7 +82,8 @@ public class Student  {
     @Override
     public String toString() {
         return "Student{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", age=" + age +
                 ", city='" + city + '\'' +
                 ", rollno=" + rollno +
