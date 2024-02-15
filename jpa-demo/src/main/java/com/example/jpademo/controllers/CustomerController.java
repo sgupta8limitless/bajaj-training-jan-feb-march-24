@@ -26,28 +26,20 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id)
     {
-        Optional<Customer> customer = customerService.get(id);
-
-        if(customer.isPresent())
-        {
-            return ResponseHandler.createResponse("Found",HttpStatus.OK,customer.get());
-        }
-
-        return ResponseHandler.createResponse("Cutomer Not Found",HttpStatus.NOT_FOUND,null);
+        Customer customer = customerService.get(id);
+        return ResponseHandler.createResponse("Found",HttpStatus.OK,customer);
 
     }
 
     @PostMapping("/")
     public ResponseEntity<Object> create(@RequestBody Customer customer)
     {
-        Object createdCustomer = customerService.create(customer);
 
-        if(createdCustomer!=null)
-        {
-            return ResponseHandler.createResponse("Created",HttpStatus.CREATED,createdCustomer);
-        }
+        Customer createdCustomer = customerService.create(customer);
+        return ResponseHandler.createResponse("Created",HttpStatus.CREATED,createdCustomer);
 
-        return ResponseHandler.createResponse("Customer Already Exists",HttpStatus.CONFLICT,null);
+
+
     }
 
 

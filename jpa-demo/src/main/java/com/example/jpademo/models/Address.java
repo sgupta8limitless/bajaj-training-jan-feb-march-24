@@ -1,5 +1,9 @@
 package com.example.jpademo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,9 +30,9 @@ public class Address {
     @Column(nullable = false)
     private Integer pincode;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JsonIgnore
     private Customer customer;
-
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -36,22 +40,18 @@ public class Address {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Address(Integer roomNo, String details, String city, Integer pincode) {
+
+    public Address(){}
+
+
+    public Address(Integer roomNo, String details, String city, Integer pincode,Customer customer) {
         this.roomNo = roomNo;
         this.details = details;
         this.city = city;
         this.pincode = pincode;
+        this.customer=customer;
     }
 
-    public Address(Long id, Integer roomNo, String details, String city, Integer pincode, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.roomNo = roomNo;
-        this.details = details;
-        this.city = city;
-        this.pincode = pincode;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
 
     public Long getId() {
@@ -94,10 +94,12 @@ public class Address {
         this.pincode = pincode;
     }
 
+    @JsonIgnore
     public Customer getCustomer() {
         return customer;
     }
 
+    @JsonProperty("customer")
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

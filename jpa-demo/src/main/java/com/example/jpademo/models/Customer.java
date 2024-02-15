@@ -1,5 +1,8 @@
 package com.example.jpademo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,18 +28,21 @@ public class Customer {
     private String email;
 
     @Column(length = 50)
+    @JsonIgnore
     private String password;
 
     private int age;
 
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Address> addresses;
 
 //    @ManyToMany
 //    private List<Product> products;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Cart> carts;
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<CartItem> cartItems;
 
 
     @CreationTimestamp
@@ -80,10 +86,12 @@ public class Customer {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
     }
@@ -100,8 +108,17 @@ public class Customer {
         return addresses;
     }
 
+
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public LocalDateTime getCreatedAt() {
