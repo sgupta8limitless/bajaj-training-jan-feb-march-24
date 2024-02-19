@@ -65,6 +65,19 @@ db.products.find({$and:[{price:{$lt:1000}},{quantity:{$gt:100}}]})
 
 db.products.find({$or:[{price:{$lt:1000}},{quantity:{$gt:120}}]})
 
+// to rename a feild
+
+db.students.updateOne(
+   { _id: 1 }, { $rename: { 'nickname': 'alias', 'cell': 'mobile' } }
+)
+
+// to delete a property 
+
+{ $unset: [ "<field1>", "<field2>", ... ] }
+
+// to check if something is in array
+
+
 
 
 
